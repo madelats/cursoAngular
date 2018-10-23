@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { HomeComponent } from '../home/home.component';
 import { DemosComponent } from '../demos/demos.component';
 import { LoggerService } from 'src/indra-core';
+import { CalculadoraComponent } from '../calculadora/calculadora.component';
 
 @Component({
   selector: 'app-dinamico',
   templateUrl: './dinamico.component.html',
   styleUrls: ['./dinamico.component.css'],
-  entryComponents: [HomeComponent, DemosComponent],
+  entryComponents: [CalculadoraComponent, HomeComponent, DemosComponent],
 })
 export class DinamicoComponent implements OnInit {
 
   menu = [
+    { texto: 'Calculadora', componente: CalculadoraComponent},
     { texto: 'Inicio', componente: HomeComponent},
     { texto: 'Demos', componente: DemosComponent},
   ];

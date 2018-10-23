@@ -1,0 +1,27 @@
+<h3>{{ cadena }}</h3>
+<h1>{{ resultado }}</h1>
+
+<tr>
+    <td><button (click)="(addNumber(1))">1</button></td>
+    <td><button (click)="(addNumber(2))">2</button></td>
+    <td><button (click)="(addNumber(3))">3</button></td>
+    <td><button (click)="(addOperation('/'))">/</button></td>
+</tr>
+<tr>
+    <td><button (click)="(addNumber(4))">4</button></td>
+    <td><button (click)="(addNumber(5))">5</button></td>
+    <td><button (click)="(addNumber(6))">6</button></td>
+    <td><button (click)="(addOperation('*'))">*</button></td>
+</tr>
+<tr>
+    <td><button (click)="(addNumber(7))">7</button></td>
+    <td><button (click)="(addNumber(8))">8</button></td>
+    <td><button (click)="(addNumber(9))">9</button></td>
+    <td><button (click)="(addOperation('-'))">-</button></td>
+</tr>
+<tr>
+    <td><button>,</button></td>
+    <td><button (click)="(addNumber(0))">0</button></td>
+    <td><button (click)="(addOperation('='))">=</button></td>
+    <td><button (click)="(addOperation('+'))">+</button></td>
+</tr>
