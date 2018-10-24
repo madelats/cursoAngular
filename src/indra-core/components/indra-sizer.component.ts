@@ -1,18 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'indra-sizer',
   template: `
-  <div>
-    <button (click)="dec()">-</button>
-    <button (click)="inc()">+</button>
-    <label [style.font-size.px]="size">FontSize: {{size}}px</label>
-  </div>`
+    <div>
+      <button (click)="dec()">-</button>
+      <button (click)="inc()">+</button>
+      <label [style.font-size.px]="size">FontSize: {{size}}px</label>
+    </div>`
 })
-
 export class IndraSizerComponent {
-
   @Input()  size: number | string;
   @Output() sizeChange = new EventEmitter<number>();
   dec() { this.resize(-1); }
@@ -21,5 +18,4 @@ export class IndraSizerComponent {
     this.size = Math.min(40, Math.max(8, +this.size + delta));
     this.sizeChange.emit(this.size);
   }
-
 }

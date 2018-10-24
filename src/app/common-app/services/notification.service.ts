@@ -14,7 +14,6 @@ export class Notification {
 
   public get Mensaje() { return this.mensaje; }
   public set Mensaje(valor: string) { this.mensaje = valor; }
-
   public get Tipo() { return this.tipo; }
   public set Tipo(valor: NotificationType) { this.tipo = valor; }
 }
@@ -23,7 +22,6 @@ export class Notification {
   providedIn: 'root'
 })
 export class NotificationService {
-
   private listado: Array<Notification> = [];
 
   constructor(private out: LoggerService) { }
@@ -31,7 +29,6 @@ export class NotificationService {
   public get Listado() {
     return Object.assign([], this.listado);
   }
-
   public get HayNotificaciones() {
     return this.listado.length > 0;
   }
@@ -42,9 +39,8 @@ export class NotificationService {
       return;
     }
     this.listado.push(new Notification(msg, tipo));
-    this.out.warn(`Notificación: ${msg}`);
+    this.out.warn(`Notificacion: ${msg}`);
   }
-
   public remove(indice: number): void {
     if (0 <= indice && indice < this.listado.length) {
       this.listado.splice(indice, 1);
@@ -53,7 +49,6 @@ export class NotificationService {
       return;
     }
   }
-
   public clear(): void {
     if (this.listado.length) {
       this.listado.splice(0);

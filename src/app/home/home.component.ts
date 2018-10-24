@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../common-app';
 
 @Component({
@@ -6,13 +6,16 @@ import { NotificationService } from '../common-app';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   title = 'Hola mundo';
-  constructor () {
-  // constructor (notify: NotificationService) {
+  constructor(notify: NotificationService) {
     // notify.add('Demo');
     // notify.remove(0);
     // notify.remove(0);
   }
+
+  ngOnInit() {
+  }
+
 }

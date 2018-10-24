@@ -12,15 +12,15 @@ export class DemosComponent implements OnInit {
     {id: 1, nombre: 'Madrid'},
     {id: 2, nombre: 'BARCELONA'},
     {id: 3, nombre: 'valencia'},
-    {id: 4, nombre: 'Sevilla'},
+    {id: 4, nombre: 'SevillA'},
   ];
-
   idProvincia = 2;
+
   fontsize = 24;
 
   resultado: any;
   visible = true;
-  estetica = { importante: true, error: false, urgente: true};
+  estetica = { importante: true, error: false, urgente: true };
 
   constructor(public notify: NotificationService) { }
 
@@ -30,11 +30,9 @@ export class DemosComponent implements OnInit {
   saluda() {
     this.resultado = `Hola ${this.nombre}`;
   }
-
   despide() {
-    this.resultado = `Adiós ${this.nombre}`;
+    this.resultado = `Adios ${this.nombre}`;
   }
-
   di(algo: string) {
     this.resultado = `Dice ${algo}`;
   }
@@ -56,10 +54,29 @@ export class DemosComponent implements OnInit {
     this.listado.push({id: key, nombre: provincia});
     this.idProvincia = key;
   }
-
   public remove(indice: number): void {
     if (0 <= indice && indice < this.listado.length) {
       this.listado.splice(indice, 1);
     }
   }
+
+
+  // tslint:disable:member-ordering
+  idiomas = [
+    { codigo: 'es', region: 'España' },
+    { codigo: 'pt', region: 'Portuges' },
+    { codigo: 'en-US', region: 'USA' }
+  ];
+  idioma = this.idiomas[0].codigo;
+  resultados: any[] = [];
+  valCalculadora = 666;
+  // tslint:enable:member-ordering
+  ponResultado(origen: string, valor: any) {
+    this.resultados.push({
+      pos: this.resultados.length + 1,
+      origen: origen,
+      valor: valor
+    });
+  }
+
 }

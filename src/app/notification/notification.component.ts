@@ -8,7 +8,7 @@ import { NotificationService } from '../common-app';
 })
 export class NotificationComponent implements OnInit {
 
-  constructor( private vm: NotificationService) { }
+  constructor(private vm: NotificationService) { }
 
   public get VM() { return this.vm; }
 

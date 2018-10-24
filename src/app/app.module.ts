@@ -1,3 +1,8 @@
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es';
+registerLocaleData(localeEs, 'es', localeEsExtra);
+
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -24,14 +29,14 @@ import { CalculadoraComponent } from './calculadora/calculadora.component';
     CalculadoraComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, FormsModule,
     AppRoutingModule,
-    FormsModule,
     IndraCoreModule, ClientesModule, CommonAppModule,
   ],
-  providers: [LoggerService,
-    { provide: ERROR_LEVEL, useValue: environment }
-  ],
+  providers: [
+    LoggerService,
+    { provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL },
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

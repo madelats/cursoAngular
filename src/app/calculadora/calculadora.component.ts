@@ -1,64 +1,132 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { LoggerService } from '../../indra-core';
 
 @Component({
-  selector: 'app-calculadora',
+  // tslint:disable-next-line:component-selector
+  selector: 'calculadora',
   templateUrl: './calculadora.component.html',
   styleUrls: ['./calculadora.component.css']
 })
-export class CalculadoraComponent implements OnInit {
+export class CalculadoraComponent implements OnInit, OnChanges {
+  private acumulado: number = 0;
+  private operador: string = '+';
+  private limpiar: boolean = true;
 
-  resultado: number;
-  operacion = '';
-  cadena = '';
-  private num1: number;
-  private num2: number;
+  private pantalla: string = '0';
+  private resumen: string = '';
 
-  constructor() { }
+  @Input() private init: string;
+  @Output() updated: EventEmitter<any> = new EventEmitter();
 
-  ngOnInit() {
+  constructor(private out: LoggerService) { }
+
+  get Pantalla(): string { return this.pantalla; }
+  // set Pantalla(value: string) { this.ponOperando(value); }
+  get Resumen(): string { return this.resumen; }
+  get EsElResultado() { return this.limpiar; }
+
+  inicia() {
+    this.acumulado = 0;
+    this.operador = '+';
+    this.pantalla = '0';
+    this.resumen = '';
+    this.limpiar = true;
   }
 
-  addNumber(n: number) {
-    if (!this.num1) {
-      this.num1 = n;
-    } else if (this.operacion === '') {
-        this.num1 = this.num1 * 10 + n;
-      } else if (!this.num2) {
-        this.num2 = n;
-      } else {
-        this.num2 = this.num2 * 10 + n;
-      }
-    this.cadena = this.cadena + n;
-  }
-
-  addOperation(s: string) {
-    if (this.num1 || this.num1 === 0) {
-      if (s === '=' && (this.num2 || this.num2 === 0)) {
-          switch (this.operacion) {
-            case '+':
-              this.resultado = this.num1 + this.num2;
-              break;
-            case '-':
-              this.resultado = this.num1 - this.num2;
-              break;
-            case '*':
-              this.resultado = this.num1 * this.num2;
-              break;
-            case '/':
-              this.resultado = this.num1 / this.num2;
-              break;
-            default:
-              break;
-          }
-        this.num1 = this.resultado;
-        this.num2 = null;
-        this.cadena = this.num1 + '';
-        this.operacion = '';
-      } else {
-        this.cadena = this.cadena + s;
-        this.operacion = s;
-      }
+  ponDijito(value: any) {
+    if (typeof(value) !== 'string') {
+      value = value.toString();
+    }
+    if (value.length !== 1 || value < '0' || value > '9') {
+      this.out.error('No es un valor numerico.');
+      return;
+    }
+    if (this.limpiar || this.pantalla === '0') {
+      this.pantalla = value;
+      this.limpiar = false;
+    } else {
+      this.pantalla += value;
     }
   }
 
+  ponOperando(value: any) {
+    if (!Number.isNaN(parseFloat(value))) {
+        this.pantalla = value.toString();
+        this.limpiar = false;
+    } else {
+        this.out.error('No es un valor numerico.');
+    }
+  }
+
+  ponComa() {
+    if (this.limpiar) {
+      if (!isFinite(this.acumulado) || isNaN(this.acumulado)) { return; }
+      this.pantalla = '0.';
+      this.limpiar = false;
+    } else if (this.pantalla.indexOf('.') === -1) {
+      this.pantalla += '.';
+    } else {
+          this.out.warn('Ya tiene separador decimal.');
+    }
+  }
+
+  borrar() {
+    if (this.limpiar || this.pantalla.length === 1) {
+      this.pantalla = '0';
+      this.limpiar = true;
+    } else {
+      this.pantalla = this.pantalla.substr(0,
+          this.pantalla.length - 1);
+    }
+  }
+
+  cambiaSigno() {
+    this.pantalla = (-this.pantalla).toString();
+    if (this.limpiar) {
+        this.acumulado = -this.acumulado;
+    }
+  }
+
+  calcula(value: string) {
+    if ('+-*/='.indexOf(value) === -1) {
+      this.out.error(`Operacion no soportada: ${value}`);
+      return;
+    }
+
+    const operando = parseFloat(this.pantalla);
+    switch (this.operador) {
+    case '+':
+      this.acumulado += operando;
+      break;
+    case '-':
+      this.acumulado -= operando;
+      break;
+    case '*':
+      this.acumulado *= operando;
+      break;
+    case '/':
+      this.acumulado /= operando;
+      break;
+    case '=':
+      break;
+    }
+    // Con eval()
+    // acumulado = eval (acumulado + this.operador + this.pantalla);
+    this.resumen = value === '=' ? '' : (this.resumen + this.pantalla + value);
+    this.pantalla = this.acumulado.toString();
+    this.updated.emit(this.acumulado);
+    this.operador = value;
+    this.limpiar = true;
+  }
+
+  ngOnInit() {
+    if (this.init) {
+      this.ponOperando(this.init);
+    }
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    // if (this.init) {
+    //   this.ponOperando(this.init);
+    // }
+  }
 }
